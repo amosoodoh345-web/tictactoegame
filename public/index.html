@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Tic-Tac-Toe</title>
+<link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+<div class="app">
+  <!-- ============ LEFT: GAME BOARD ============ -->
+  <div class="board-section">
+    <div id="board" class="board" aria-label="Tic Tac Toe board"></div>
+
+    <div class="scoreboard" id="scoreboard">
+      <!-- populated by JS -->
+    </div>
+
+    <div class="history-panel">
+      <div class="group-label" id="historyTitle">Match History</div>
+      <div class="history-list" id="historyList"></div>
+    </div>
+
+    <div class="leaderboard-panel" id="leaderboardPanel" style="display:none;">
+      <div class="group-label">Online Leaderboard</div>
+      <div class="leaderboard-list" id="leaderboardList"></div>
+    </div>
+  </div>
+
+  <!-- ============ RIGHT: SETTINGS / INFO ============ -->
+  <div class="info-section">
+    <h1>Tic-Tac-Toe</h1>
+    <p class="subtitle">First player to line up three symbols in a row wins.</p>
+
+    <div class="tabs">
+      <button class="tab-btn active" data-mode="pvp" id="modePvp">2 Players</button>
+      <button class="tab-btn" data-mode="ai" id="modeAi">Vs AI</button>
+      <button class="tab-btn" data-mode="online" id="modeOnline">Online</button>
+    </div>
+
+    <!-- ---- Local / AI player name fields ---- -->
+    <label class="field" id="playerXLabel">
+      <span>Player X name</span>
+      <input type="text" id="playerXName" placeholder="Player 1" maxlength="16" />
+    </label>
+
+    <label class="field" id="playerOLabel">
+      <span>Player O name</span>
+      <input type="text" id="playerOName" placeholder="Player 2" maxlength="16" />
+    </label>
+
+    <label class="field" id="aiDifficultyField" style="display:none;">
+      <span>AI difficulty</span>
+      <select id="aiDifficulty">
+        <option value="easy">Easy (random)</option>
+        <option value="hard" selected>Hard (unbeatable)</option>
+      </select>
+    </label>
+
+    <!-- ---- Online mode panel ---- -->
+    <div class="online-panel" id="onlinePanel" style="display:none;">
+      <div class="connection-pill">
+        <span class="connection-dot" id="connectionDot"></span>
+        <span id="connectionLabel">Offline</span>
+      </div>
+
+      <label class="field" id="onlineNameLabel">
+        <span>Your name</span>
+        <input type="text" id="onlineName" placeholder="Your name" maxlength="16" />
+      </label>
+
+      <div id="onlineLobby">
+        <button class="btn" id="createRoomBtn">Create Room</button>
+        <div class="hint">Share the room code with a friend, or join one below.</div>
+        <div class="join-row" style="margin-top:12px;">
+          <input type="text" id="joinRoomCode" placeholder="Enter room code" maxlength="6" style="text-transform:uppercase;" />
+          <button class="btn secondary" id="joinRoomBtn">Join</button>
+        </div>
+      </div>
+
+      <div id="onlineRoom" style="display:none;">
+        <div class="room-code-display" id="roomCodeDisplay">------</div>
+        <div class="hint" id="roomHint">Waiting for an opponent to join...</div>
+        <div class="btn-row">
+          <button class="btn" id="rematchBtn" style="display:none;">Rematch</button>
+          <button class="btn danger" id="leaveRoomBtn">Leave Room</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ---- Symbol / starter selection (local & AI modes) ---- -->
+    <div class="row" id="symbolStarterRow">
+      <div>
+        <div class="group-label">Your symbol</div>
+        <div class="icon-btn-group" id="symbolGroup">
+          <button class="icon-btn" data-symbol="X" title="Play as X">
+            <svg viewBox="0 0 24 24" fill="none"><path class="mark-x" d="M5 5L19 19M19 5L5 19" stroke-width="3" stroke-linecap="round"/></svg>
+          </button>
+          <button class="icon-btn active" data-symbol="O" title="Play as O">
+            <svg viewBox="0 0 24 24" fill="none"><circle class="mark-o" cx="12" cy="12" r="7" stroke-width="3"/></svg>
+          </button>
+        </div>
+      </div>
+      <div>
+        <div class="group-label">Who starts</div>
+        <div class="icon-btn-group" id="starterGroup">
+          <button class="icon-btn active" data-starter="O" title="O starts">
+            <svg viewBox="0 0 24 24" fill="none"><circle class="mark-o" cx="12" cy="12" r="7" stroke-width="3"/></svg>
+          </button>
+          <button class="icon-btn" data-starter="X" title="X starts">
+            <svg viewBox="0 0 24 24" fill="none"><path class="mark-x" d="M5 5L19 19M19 5L5 19" stroke-width="3" stroke-linecap="round"/></svg>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="status" id="status">Your turn</div>
+
+    <div class="btn-row" id="localControls">
+      <button class="btn" id="restartBtn">Restart</button>
+      <button class="btn secondary" id="resetScoreBtn">Reset Scores</button>
+      <button class="btn secondary" id="clearHistoryBtn">Clear History</button>
+    </div>
+  </div>
+</div>
+
+<!-- Socket.IO client, served automatically by the Node server (see server.js). -->
+<!-- If you open this file directly from disk (no server running) this script
+     will fail to load; Online mode will then show a message asking you to
+     start the server. Local and AI modes keep working either way. -->
+<script src="/socket.io/socket.io.js"></script>
+<script src="script.js"></script>
+</body>
+</html>
